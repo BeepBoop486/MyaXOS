@@ -45,6 +45,11 @@ void keyboard_handler(struct regs *r) {
 	if (scancode & 0x80) {
 		/* key up */
 	} else {
+		if (kbd_us[scancode] == 'q') {
+			/* Page Fault Time */
+			uint32_t *ptr = (uint32_t *)0xA0000000;
+			uint32_t do_page_fault = *ptr;
+		}
 		putch(kbd_us[scancode]);
 	}
 }

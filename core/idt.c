@@ -25,7 +25,7 @@ extern void idt_load();
  * idt_set_gate
  * Set an IDT gate
  */
-void idt_set_gate( unsigned char num, unsigned long base, unsigned short sel, unsigned char flags ) {
+void idt_set_gate(unsigned char num,unsigned long base,unsigned short sel,unsigned char flags) {
 	idt[num].base_low =		(base & 0xFFFF);
 	idt[num].base_high =	(base >> 16) & 0xFFFF;
 	idt[num].sel =			sel;

@@ -33,7 +33,7 @@ extern void gdt_flush();
  * gdt_set_gate
  * Set a GDT descriptor
  */
-void gdt_set_gate(int num, unsigned long base, unsigned long limit, unsigned char access, unsigned char gran ) {
+void gdt_set_gate(int num,unsigned long base,unsigned long limit,unsigned char access,unsigned char gran) {
 	/* Base Address */
 	gdt[num].base_low =		(base & 0xFFFF);
 	gdt[num].base_middle =	(base >> 16) & 0xFF;

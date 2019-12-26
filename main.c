@@ -72,8 +72,8 @@ void outportb(unsigned short _port,unsigned char _data) {
 	__asm__ __volatile__ ("outb %1, %0" : : "dN" (_port), "a" (_data));
 }
 
-/**
- * 99 Boottles of Beer on the -Wall
+/*
+ * 99 Bottles of Beer on the -Wall
  * Sample kernel mode program.
  */
 void beer() {
@@ -96,17 +96,17 @@ void beer() {
 }
 
 /*
- * Kernel Entry point
+ * kernel entry point
  */
 int main(struct multiboot *mboot_ptr) {
 	gdt_install();
 	idt_install();
 	isrs_install();
 	irq_install();
-	__asm__ __volatile__("sti");
+	init_video();
+	paging_install(mboot_ptr->mem_upper + 1024);
 	timer_install();
 	keyboard_install();
-	init_video();
 	/* Yes, yes, these are #define'd strings, consider this a nice test of kprintf */
 	settextcolor(12,0);
 	kprintf("[%s %s]\n", KERNEL_UNAME, KERNEL_VERSION_STRING);
@@ -142,10 +142,13 @@ int main(struct multiboot *mboot_ptr) {
 	kprintf("(End multiboot raw data)\n");
 	kprintf("Started with: %s\n", (char *)mboot_ptr->cmdline);
 	kprintf("Booted from: %s\n", (char *)mboot_ptr->boot_loader_name);
+
 	kprintf("%dkB lower memory\n", mboot_ptr->mem_lower);
 	kprintf("%dkB higher memory ", mboot_ptr->mem_upper);
 	int mem_mb = mboot_ptr->mem_upper / 1024;
 	kprintf("(%dMB)\n", mem_mb);
+
+
 	settextcolor(7,0);
 	kprintf("Testing colors...\n");
 	resettextcolor();
@@ -157,7 +160,7 @@ int main(struct multiboot *mboot_ptr) {
 	putch('\n');
 	resettextcolor();
 
-	settextcolor(14,4);
+	settextcolor(9,0);
 	kprintf(" = Roadmap = \n");
 	kprintf("- Paging\n");
 	kprintf("- Heap\n");
@@ -166,7 +169,9 @@ int main(struct multiboot *mboot_ptr) {
 	kprintf("- Task switching\n");
 	kprintf("- User mode execution\n");
 	kprintf("- EXT2\n");
+	resettextcolor();
 
+	kprintf("Kernel is finished booting. Press `q` to produce a page fault.\n");
 
 	//for (;;);
 	return 0;
