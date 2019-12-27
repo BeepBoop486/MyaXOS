@@ -51,6 +51,31 @@ void start_shell() {
 						}
 					}
 				}
+			} else if(!strcmp(cmd, "cat")) {
+				if(tokenid < 2) {
+					kprintf("cat: argument expected\n");
+					continue;
+				} else {
+					if(argv[1][0] == '/') {
+						fs_node_t * file = kopen(argv[1],0);
+
+						if(!file) {
+							kprintf("cat: could not open file `%s`\n", argv[1]);
+							continue;
+						}
+
+						char *bufferb = malloc(file->length + 200);
+						size_t bytes_read = read_fs(file, 0, file->length, (uint8_t *)bufferb);
+						size_t i = 0;
+						
+						for(i = 0; i < bytes_read; ++i) {
+							writech(bufferb[i]);
+						}
+						free(bufferb);
+						close_fs(file);
+
+					}
+				}
 			}
 		}
 	}
