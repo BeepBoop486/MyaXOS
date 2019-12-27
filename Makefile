@@ -7,14 +7,21 @@ DIRS = core
 all: kernel
 
 install: kernel
-	sudo mount bootdisk.img /mnt -o loop
-	sudo cp kernel /mnt/kernel
-	sudo cp initrd /mnt/initrd
-	sudo umount /mnt
-	sudo cp kernel /boot/myaxos-kernel
+	cp bootdisk.src.img bootdisk.img
+	mount bootdisk.img /mnt -o loop
+	cp kernel /mnt/kernel
+	cp initrd /mnt/initrd
+	umount /mnt
+	cp kernel /boot/MyaXos-kernel
+
+run: bootdisk.img
+	qemu-system-x86_64 -fda bootdisk.img
+
+curses: bootdisk.img
+	qemu -curses -fda bootdisk.img
 
 kernel: start.o link.ld main.o core
-	${LD} -T link.ld -o kernel *.o core/*.o
+	${LD} -T link.ld -o kernel *.o core/*.o core/fs/*.o
 
 %.o: %.c
 	${CC} ${CFLAGS} -I./include -c -o $@ $<
@@ -25,12 +32,7 @@ core:
 start.o: start.asm
 	nasm -f elf -o start.o start.asm
 
-run: bootdisk.img
-	qemu-system-x86_64 -fda bootdisk.img
-
-curses: bootdisk.img
-	qemu-system-x86_64 -curses -fda bootdisk.img
-
 clean:
 	-rm -f *.o kernel
+	-rm -f bootdisk.img
 	-for d in ${DIRS}; do (cd $$d; ${MAKE} clean); done

@@ -1,30 +1,29 @@
 #include <system.h>
 
-
-/**
+/*
  * memcpy
  * Copy from source to destination. Assumes that
- * source and destination are not overlapping
+ * source and destination are not overlapping.
  */
-void *memcpy(void * restrict dest, const void * restrict src, size_t count) {
+void *memcpy(void * restrict dest,const void * restrict src,size_t count) {
 	size_t i;
 	unsigned char *a = dest;
 	const unsigned char *b = src;
-	for(i = 0; i < count; ++i) {
+	for ( i = 0; i < count; ++i ) {
 		a[i] = b[i];
 	}
 	return dest;
 }
 
-int strmcp(const char * a, const char * b) {
+int strcmp(const char * a,const char * b) {
 	uint32_t i = 0;
-	while(1) {
-		if(a[i] < b[i]) {
+	while (1) {
+		if (a[i] < b[i]) {
 			return -1;
-		} else if(a[i] > b[i]) {
+		} else if (a[i] > b[i]) {
 			return 1;
 		} else {
-			if(a[i] == '\0') {
+			if (a[i] == '\0') {
 				return 0;
 			}
 			++i;
@@ -32,47 +31,47 @@ int strmcp(const char * a, const char * b) {
 	}
 }
 
-/**
+/*
  * memset
- * set ` count ` bytes to ` val `
+ * Set `count` bytes to `val`.
  */
-void *memset(void *b, int val, size_t count) {
+void * memset(void *b,int val,size_t count) {
 	size_t i;
 	unsigned char * dest = b;
-	for(i = 0; i < count; ++i) {
+	for ( i = 0; i < count; ++i ) {
 		dest[i] = (unsigned char)val;
 	}
 	return b;
 }
 
-/**
+/*
  * memsetw
- * set ` count ` shorts to ` val `
+ * Set `count` shorts to `val`.
  */
-unsigned short *memsetw(unsigned short *dest, unsigned short val, int count) {
+unsigned short *memsetw(unsigned short *dest,unsigned short val,int count) {
 	int i;
 	i = 0;
-	for(; i < count; ++i) {
+	for ( ; i < count; ++i ) {
 		dest[i] = val;
 	}
 	return dest;
 }
 
-/**
+/*
  * strlen
- * Returns the length of a given `str`
+ * Returns the length of a given `str`.
  */
 int strlen(const char *str) {
 	int i = 0;
-	while(str[i] != (char)0) {
+	while (str[i] != (char)0) {
 		++i;
 	}
 	return i;
 }
 
-/**
+/*
  * inportb
- * Read from an I/O port
+ * Read from an I/O port.
  */
 unsigned char inportb(unsigned short _port) {
 	unsigned char rv;
@@ -80,10 +79,10 @@ unsigned char inportb(unsigned short _port) {
 	return rv;
 }
 
-/**
+/*
  * outportb
- * Write to an I/O port
+ * Write to an I/O port.
  */
-void outportb(unsigned short _port, unsigned char _data) {
-	__asm__ __volatile__("outb %1, %0" : : "dN" (_port), "a" (_data));
+void outportb(unsigned short _port,unsigned char _data) {
+	__asm__ __volatile__ ("outb %1, %0" : : "dN" (_port), "a" (_data));
 }

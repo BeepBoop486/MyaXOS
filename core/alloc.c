@@ -121,7 +121,6 @@
  */
 #define NUM_BINS 11U								/* Number of bins, total, under 32-bit. */
 #define SMALLEST_BIN_LOG 2U							/* Logarithm base two of the smallest bin: log_2(sizeof(int32)). */
-
 #define BIG_BIN (NUM_BINS - 1)						/* Index for the big bin, (NUM_BINS - 1) */
 #define SMALLEST_BIN (1UL << SMALLEST_BIN_LOG)		/* Size of the smallest bin. */
 
@@ -700,7 +699,7 @@ static void klfree(void *ptr) {
 	if (bucket_id > NUM_BINS) {
 		bucket_id = BIG_BIN;
 		klmalloc_big_bin_header *bheader = (klmalloc_big_bin_header*)header;
-		
+
 		assert(bheader);
 		assert(bheader->head == NULL);
 		assert((bheader->size + sizeof(klmalloc_big_bin_header)) % PAGE_SIZE == 0);
@@ -882,7 +881,7 @@ static void * __attribute__ ((malloc)) klcalloc(size_t nmemb, size_t size) {
 	/*
 	 * Allocate memory and zero it before returning
 	 * a pointer to the newly allocated memory.
-	 * 
+	 *
 	 * Implemented by way of a simple malloc followed
 	 * by a memset to 0x00 across the length of the
 	 * requested memory chunk.

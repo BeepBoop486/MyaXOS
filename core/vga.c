@@ -67,9 +67,7 @@ void cls() {
  * putch
  * Puts a character to the screen
  */
-void putch(
-		unsigned char c
-	 ) {
+void putch(unsigned char c) {
 	unsigned short *where;
 	unsigned att = attrib << 8;
 	if (c == 0x08) {

@@ -124,7 +124,7 @@ void free_frame(page_t *page) {
 }
 
 void paging_install(uint32_t memsize) {
-	nframes = memsize / 4; //memsize  / 4;
+	nframes = memsize  / 4;
 	frames  = (uint32_t *)kmalloc(INDEX_FROM_BIT(nframes));
 	memset(frames, 0, INDEX_FROM_BIT(nframes));
 	kernel_directory = (page_directory_t *)kvmalloc(sizeof(page_directory_t));
@@ -179,7 +179,7 @@ void page_fault(struct regs *r)  {
 	HALT_AND_CATCH_FIRE("Page fault");
 }
 
-/**
+/*
  * Heap
  * Stop using kalloc and friends after installing the heap
  * otherwise shit will break. I've conveniently broken
@@ -199,9 +199,9 @@ void *sbrk(uintptr_t increment) {
 	uintptr_t address = heap_end;
 	heap_end += increment;
 	uintptr_t i;
-	for(i = address; i < heap_end; i += 0x1000) {
+	for (i = address; i < heap_end; i += 0x1000) {
 		get_page(i, 1, kernel_directory);
 		alloc_frame(get_page(i, 1, kernel_directory), 0, 0);
 	}
-	return (void *) address;
+	return (void *)address;
 }

@@ -141,16 +141,17 @@ keyboard_handler_t key_method[] = {
 	/* 78 */ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 };
 
+
 void keyboard_handler(struct regs *r) {
 	unsigned char scancode;
 	scancode = inportb(0x60);
-
 	keyboard_handler_t handler;
 	handler = key_method[(int)scancode & 0x7f];
-	if(handler) {
+	if (handler) {
 		handler(scancode);
 	}
-}	
+}
+
 void keyboard_install() {
 	/* IRQ installer */
 	irq_install_handler(1, keyboard_handler);

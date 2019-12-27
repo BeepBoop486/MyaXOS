@@ -30,7 +30,7 @@ extern unsigned short *memsetw(unsigned short *dest, unsigned short val, int cou
 extern int strlen(const char *str);
 extern unsigned char inportb (unsigned short _port);
 extern void outportb (unsigned short _port, unsigned char _data);
-int strcmp(const char *a, const char * b);
+int strcmp(const char * a, const char * b);
 
 /* Panic */
 #define HALT_AND_CATCH_FIRE(mesg) halt_and_catch_fire(mesg, __FILE__, __LINE__)

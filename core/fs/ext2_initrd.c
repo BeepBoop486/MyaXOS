@@ -25,14 +25,13 @@ void * ext2_get_block(uint32_t block);
 uint32_t read_initrd(fs_node_t *node,uint32_t offset,uint32_t size,uint8_t *buffer) {
 	ext2_inodetable_t * inode = ext2_get_inode(node->inode);
 	uint32_t end;
-	if(offset + size > inode->size) {
+	if (offset + size > inode->size) {
 		end = inode->size;
 	} else {
 		end = offset + size;
 	}
-
 	uint32_t size_to_read = end - offset;
-	//TODO: proper block reading, read files larger than one block
+	// TODO: proper block reading, read files larger than one block
 	memcpy(buffer, ext2_get_block(inode->block[0]) + offset, size_to_read);
 	return size_to_read;
 }
@@ -44,7 +43,7 @@ uint32_t write_initrd(fs_node_t *node,uint32_t offset,uint32_t size,uint8_t *buf
 	return 0;
 }
 
-void open_initrd(fs_node_t *node,uint8_t read, uint8_t write) {
+void open_initrd(fs_node_t *node,uint8_t read,uint8_t write) {
 	// woosh
 }
 
@@ -211,7 +210,7 @@ void *ext2_get_block(uint32_t block) {
 	return (void *)((uintptr_t)initrd_start + (1024 << initrd_superblock->log_block_size) * block);
 }
 
-ext2_dir_t * ext2_get_direntry(ext2_inodetable_t * inode,uint32_t index) {
+ext2_dir_t *ext2_get_direntry(ext2_inodetable_t * inode,uint32_t index) {
 	assert(inode->mode & EXT2_S_IFDIR);
 	void * block;
 	block = (void *)ext2_get_block(inode->block[0]);

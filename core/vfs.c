@@ -4,7 +4,7 @@
 fs_node_t *fs_root = 0;
 
 uint32_t read_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer) {
-	if(node->read != 0) {
+	if (node->read != 0) {
 		return node->read(node, offset, size, buffer);
 	} else {
 		return 0;
@@ -12,7 +12,7 @@ uint32_t read_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffe
 }
 
 uint32_t write_fs(fs_node_t *node, uint32_t offset, uint32_t size, uint8_t *buffer) {
-	if(node->write != 0) {
+	if (node->write != 0) {
 		return node->write(node, offset, size, buffer);
 	} else {
 		return 0;
@@ -47,15 +47,15 @@ fs_node_t *finddir_fs(fs_node_t *node, char *name) {
 	}
 }
 
-/**
- * Retrieve the node for the requested path
+/*
+ * Retreive the node for the requested path
  */
-fs_node_t *kopen(const char *filename, uint32_t flags) {
-	/* TODO: this */
-	if(!fs_root) {
+fs_node_t *kopen(const char *filename,uint32_t flags) {
+	/* let's do this shit */
+	if (!fs_root) {
 		HALT_AND_CATCH_FIRE("Attempted to kopen() without a filesystem in place.");
 	}
-	if(!filename[0] == '/') {
+	if (!filename[0] == '/') {
 		HALT_AND_CATCH_FIRE("Attempted to kopen() a non-absolute path.");
 	}
 	uint32_t path_len = strlen(filename);
