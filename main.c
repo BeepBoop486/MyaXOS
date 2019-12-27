@@ -120,6 +120,15 @@ void dump_multiboot(struct multiboot *mboot_ptr) {
 	kprintf("%dkB higher memory ", mboot_ptr->mem_upper);
 	int mem_mb = mboot_ptr->mem_upper / 1024;
 	kprintf("(%dMB)\n", mem_mb);
+	kprintf("Found %d module(s).\n", mboot_ptr->mods_count);
+	if(mboot_ptr->mods_count > 0) {
+		int i;
+		for(i = 0; i < mboot_ptr->mods_count; ++i) {
+			uint32_t module_start = *((uint32_t*)mboot_ptr->mods_addr + 8 * i);
+			uint32_t module_end   = *(uint32_t*)(mboot_ptr->mods_addr + 8 * i + 4);
+			kprintf("Module %d is at 0x%x:0x%x\n", i+1, module_start, module_end);
+		}
+	}
 }
 
 /*
@@ -128,10 +137,12 @@ void dump_multiboot(struct multiboot *mboot_ptr) {
 int main(struct multiboot *mboot_ptr) {
 	
 	if(mboot_ptr->mods_count > 0) {
-		kmalloc_startat(((uintptr_t *)mboot_ptr->mods_addr)[1]);
+		uint32_t module_start = *((uint32_t*)mboot_ptr->mods_addr);
+		uint32_t module_end   = *(uint32_t*)(mboot_ptr->mods_addr+4);
+		kmalloc_startat(module_end);
 	}
 
-	mboot_ptr = copy_multiboot(mboot_ptr);
+	//mboot_ptr = copy_multiboot(mboot_ptr);
 	
 	gdt_install(); /* Global descriptor tabe */
 	idt_install(); /* IDT */
