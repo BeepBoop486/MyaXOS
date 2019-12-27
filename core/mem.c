@@ -8,6 +8,10 @@
 extern uintptr_t end;
 uintptr_t placement_pointer = &end;
 
+void kmalloc_startat(uintptr_t address) {
+	placement_pointer = address;
+}
+
 /*
  * kmalloc() is the kernel's dumb placement allocator
  */

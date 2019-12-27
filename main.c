@@ -126,6 +126,11 @@ void dump_multiboot(struct multiboot *mboot_ptr) {
  * kernel entry point
  */
 int main(struct multiboot *mboot_ptr) {
+	
+	if(mboot_ptr->mods_count > 0) {
+		kmalloc_startat(((uintptr_t *)mboot_ptr->mods_addr)[1]);
+	}
+
 	mboot_ptr = copy_multiboot(mboot_ptr);
 	
 	gdt_install(); /* Global descriptor tabe */
