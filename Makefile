@@ -9,6 +9,7 @@ all: kernel
 install: kernel
 	sudo mount bootdisk.img /mnt -o loop
 	sudo cp kernel /mnt/kernel
+	sudo cp initrd /mnt/initrd
 	sudo umount /mnt
 	sudo cp kernel /boot/myaxos-kernel
 
