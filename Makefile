@@ -2,7 +2,7 @@ include Makefile.inc
 
 DIRS = core
 
-.PHONY: all clean install core run
+.PHONY: all clean install core run curses
 
 all: kernel
 
@@ -27,6 +27,9 @@ start.o: start.asm
 
 run: bootdisk.img
 	qemu-system-x86_64 -fda bootdisk.img
+
+curses: bootdisk.img
+	qemu-system-x86_64 -curses -fda bootdisk.img
 
 clean:
 	-rm -f *.o kernel

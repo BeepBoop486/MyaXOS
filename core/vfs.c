@@ -80,8 +80,10 @@ fs_node_t *kopen(const char *filename, uint32_t flags) {
 			free((void *)path);
 			return NULL;
 		} else if (depth == path_depth - 1) {
+			open_fs(node_ptr, 1, 0);
 			return node_ptr;
 		}
+		path_offset += strlen(path_offset) + 1;
 	}
 	free((void *)path);
 	return NULL;
