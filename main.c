@@ -60,21 +60,7 @@ int main(struct multiboot *mboot_ptr) {
 	free(test_file);
 	free(buffer);
 
-#if 0
-
-	test_file = kopen("/usr/docs/README.txt", NULL);
-	char * bufferb = malloc(test_file->length + 200);
-	bytes_read = read_fs(test_file, 100, test_file->length, bufferb);
-	for(i = 0; i < bytes_read; ++i) {
-		kprintf("%c", (char)bufferb[i]);
-		if(i % 500 == 0) {
-			timer_wait(10);
-		}
-	}
-	free(test_file);
-	close_fs(test_file);
-
-#endif
+	start_shell();
 
 	return 0;
 }
