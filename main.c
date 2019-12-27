@@ -39,7 +39,7 @@ int main(struct multiboot *mboot_ptr) {
 		kprintf("Couldn't find hello.txt\n");
 	}
 
-	kprintf("Found at inode %d\n", test_file->name, test_file->inode);
+	kprintf("Found at inode %d\n", test_file->inode);
 	char buffer[256];
 	uint32_t bytes_read;
 	bytes_read = read_fs(test_file, 0, 255, &buffer);
