@@ -34,6 +34,14 @@ void start_shell() {
 			/**
 			 * Execute command
 			 */
+			if(!strcmp(cmd, "cd")) {
+				if(tokenid < 2) {
+					kprintf("cd: argument expected\n");
+					continue;
+				} else {
+					//TODO: cd
+				}
+			}
 		}
 	}
 }
