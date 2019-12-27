@@ -112,7 +112,25 @@ void start_shell() {
  					i++;
  					entry = readdir_fs(node, i);
  				}
- 			} else {
+ 			} else if (!strcmp(cmd, "help")) {
+				settextcolor(9,0);
+				kprintf("                    -@                - MyaXOS Shell help -\n");
+				kprintf("                   .##@               This is the MyaXOS kernel shell\n");
+				kprintf("                  .####@              From here, you have access\n");
+				kprintf("                  @#####@             to the virtual filesystem\n");
+				kprintf("                . *######@            can read files,\n");
+				kprintf("               .##@o@#####@           list files in directories\n");
+				kprintf("              /############@          dump memory, register\n");
+				kprintf("             /##############@         an a few other future things.\n");
+				kprintf("             @######@**%######@        \n");
+				kprintf("            @######`     %#####o       - Commands -\n");
+				kprintf("           @######@       ######%      cd\n");
+				kprintf("         -@#######h       ######@.`    cat\n");
+				kprintf("        /#####h**``       `**%@####@   ls\n");
+				kprintf("       @H@*`                    `*%#@  echo\n");
+				kprintf("      *`                            `* \n");
+				resettextcolor();
+			} else {
  				kprintf("Unrecognized command: %s\n", cmd);
  			}
 		}
