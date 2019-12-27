@@ -2,7 +2,7 @@ include Makefile.inc
 
 DIRS = core
 
-.PHONY: all clean install core run curses initrd
+.PHONY: all clean install run curses initrd
 
 all: kernel
 
@@ -21,14 +21,15 @@ run: bootdisk.img
 curses: bootdisk.img
 	qemu -curses -fda bootdisk.img
 
-kernel: start.o link.ld main.o core
+kernel: start.o link.ld main.o core.d
 	${LD} -T link.ld -o kernel *.o core/*.o core/fs/*.o
 
 %.o: %.c
 	${CC} ${CFLAGS} -I./include -c -o $@ $<
 
-core:
+core.d:
 	cd core; ${MAKE} ${MFLAGS}
+	touch core.d
 
 start.o: start.asm
 	nasm -f elf -o start.o start.asm
@@ -41,4 +42,5 @@ clean:
 	-rm -f *.o kernel
 	-rm -f bootdisk.img
 	-rm -f initrd
+	-rm -f core.d
 	-for d in ${DIRS}; do (cd $$d; ${MAKE} clean); done
