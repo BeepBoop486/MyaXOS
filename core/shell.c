@@ -39,7 +39,17 @@ void start_shell() {
 					kprintf("cd: argument expected\n");
 					continue;
 				} else {
-					//TODO: cd
+					if(argv[1][0] == '/') {
+						fs_node_t * chd = kopen(argv[1], 0);
+
+						if(chd) {
+							node = chd;
+							memcpy(path, argv[1], strlen(argv[1]));
+							path[strlen(argv[1])] = '\0';
+						} else {
+							kprintf("cd: couldn't change directory\n");
+						}
+					}
 				}
 			}
 		}
