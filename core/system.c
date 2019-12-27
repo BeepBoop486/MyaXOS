@@ -16,6 +16,22 @@ void *memcpy(void * restrict dest, const void * restrict src, size_t count) {
 	return dest;
 }
 
+int strmcp(const char * a, const char * b) {
+	uint32_t i = 0;
+	while(1) {
+		if(a[i] < b[i]) {
+			return -1;
+		} else if(a[i] > b[i]) {
+			return 1;
+		} else {
+			if(a[i] == '\0') {
+				return 0;
+			}
+			++i;
+		}
+	}
+}
+
 /**
  * memset
  * set ` count ` bytes to ` val `
