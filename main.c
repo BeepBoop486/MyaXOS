@@ -49,9 +49,9 @@ int main(struct multiboot *mboot_ptr) {
 		kprintf("Couldn't find hello.txt\n");
 	}
 	kprintf("Found at inode %d\n", test_file->inode);
-	char buffer[256];
+	char * buffer = malloc(sizeof(char) * 2048);
 	uint32_t bytes_read;
-	bytes_read = read_fs(test_file, 0, 255, &buffer);
+	bytes_read = read_fs(test_file, 0, 2047, buffer);
 	kprintf("cat /etc/kernel/hello.txt\n");
 	uint32_t i = 0;
 	for(i = 0; i < bytes_read; ++i) {
@@ -59,17 +59,23 @@ int main(struct multiboot *mboot_ptr) {
 	}
 	close_fs(test_file);
 	free(test_file);
+	free(buffer);
+
+#if 0
+
 	test_file = kopen("/usr/docs/README.txt", NULL);
 	char * bufferb = malloc(test_file->length + 200);
 	bytes_read = read_fs(test_file, 100, test_file->length, bufferb);
 	for(i = 0; i < bytes_read; ++i) {
 		kprintf("%c", (char)bufferb[i]);
 		if(i % 500 == 0) {
-			timer_wait(30);
+			timer_wait(10);
 		}
 	}
 	free(test_file);
 	close_fs(test_file);
+
+#endif
 
 	return 0;
 }
