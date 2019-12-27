@@ -127,19 +127,23 @@ void dump_multiboot(struct multiboot *mboot_ptr) {
  */
 int main(struct multiboot *mboot_ptr) {
 	mboot_ptr = copy_multiboot(mboot_ptr);
-	gdt_install();
-	idt_install();
-	isrs_install();
-	irq_install();
-	init_video();
+	
+	/* Boot Stage 1 */
+	gdt_install(); /* Global descriptor tabe */
+	idt_install(); /* IDT */
+	isrs_install(); /* Interrupt service requests */
+	irq_install(); /* Hardware interrupt requests */
+	init_video(); /* VGA Driver */
+
 	settextcolor(12,0);
 	kprintf("[%s %s]\n", KERNEL_UNAME, KERNEL_VERSION_STRING);
 	paging_install(mboot_ptr->mem_upper);
 	dump_multiboot(mboot_ptr);
-	timer_install();
-	keyboard_install();
-	/* Yes, yes, these are #define'd strings, consider this a nice test of kprintf */
 	resettextcolor();
 
+	/* Boot Stage 2 */	
+	timer_install();
+	keyboard_install();
+	
 	return 0;
 }
