@@ -25,7 +25,6 @@ uintptr_t placement_pointer = &end;
 uintptr_t kmalloc_real(size_t size,int align,uintptr_t * phys) {
 	if (align && (placement_pointer & 0xFFFFF000)) {
 		placement_pointer &= 0xFFFFF000;
-		placement_pointer += 0x1000;
 	}
 	if (phys) {
 		*phys = placement_pointer;
@@ -57,6 +56,24 @@ uintptr_t kmalloc_p(size_t size,uintptr_t *phys) {
  */
 uintptr_t kvmalloc_p(size_t size,uintptr_t *phys) {
 	return kmalloc_real(size, 1, phys);
+}
+
+uintptr_t heap_end = NULL;
+
+void *heap_install() {
+	heap_end = placement_pointer;
+}
+
+void *sbrk(uintptr_t increment) {
+	ASSERT(increment % 0x1000 == 0);
+	uintptr_t address = heap_end;
+	heap_end += increment;
+	int i;
+	for(i = address; i < heap_end; i+= 0x1000) {
+		get_page(i, 1, kernel_directory);
+		alloc_frame(get_page(i, 1, kernel_directory), 0, 0);
+	}
+	return address;
 }
 
 /*
