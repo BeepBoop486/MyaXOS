@@ -13,6 +13,7 @@ install: kernel
 	cp initrd /mnt/initrd
 	umount /mnt
 	cp kernel /boot/MyaXos-kernel
+	cp initrd /boot/MyaXos-initrd
 
 run: bootdisk.img
 	qemu-system-x86_64 -fda bootdisk.img
