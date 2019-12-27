@@ -17,6 +17,23 @@ void start_shell() {
 			/**
 			 * Tokenize the command
 			 */
+			char * pch;
+			char * cmd;
+			char * save;
+			pch = strtok_r(buffer, " ", &save);
+			cmd = pch;
+			char * argv[1024];
+			int tokenid = 0;
+			while (pch != NULL) {
+				argv[tokenid] = (char *)pch;
+				++tokenid;
+				pch = strtok_r(NULL, " ", &save);
+			}
+			argv[tokenid] = NULL;
+			
+			/**
+			 * Execute command
+			 */
 		}
 	}
 }
