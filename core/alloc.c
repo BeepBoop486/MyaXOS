@@ -163,12 +163,12 @@ void free(void * ptr) {
  */
 static size_t  __attribute__ ((always_inline, pure)) klmalloc_adjust_bin(size_t bin)
 {
-	if (bin <= SMALLEST_BIN_LOG)
+	if (bin <= (size_t)SMALLEST_BIN_LOG)
 	{
 		return 0;
 	}
 	bin -= SMALLEST_BIN_LOG + 1;
-	if (bin > BIG_BIN) {
+	if (bin > (size_t)BIG_BIN) {
 		return BIG_BIN;
 	}
 	return bin;
@@ -536,7 +536,7 @@ static void * __attribute__ ((malloc)) klmalloc(size_t size) {
 	 */
 	unsigned int bucket_id = klmalloc_bin_size(size);
 
-	if (bucket_id < BIG_BIN) {
+	if (bucket_id < (size_t)BIG_BIN) {
 		/*
 		 * Small bins.
 		 */
@@ -848,7 +848,7 @@ static void * __attribute__ ((malloc)) klrealloc(void *ptr, size_t size) {
 	void * newptr = klmalloc(size);
 	if (__builtin_expect(newptr != NULL, 1)) {
 		size_t old_size = header_old->size;
-		if (old_size < BIG_BIN) {
+		if (old_size < (size_t)BIG_BIN) {
 			/*
 			 * If we are copying from a small bin,
 			 * we need to get the size of the bin
