@@ -13,7 +13,7 @@
  		using_multiboot = 1;
  		/* Realing memory to the end of the multiboot modules */
  		kmalloc_startat(0x200000);
- 		if (mboot_ptr->flags & 0x04) {
+ 		if (mboot_ptr->flags & (1 << 3)) {
  			if (mboot_ptr->mods_count > 0) {
  				uint32_t module_start = *((uint32_t *) mboot_ptr->mods_addr);
  				uint32_t module_end = *(uint32_t *) (mboot_ptr->mods_addr + 4);
@@ -46,7 +46,7 @@
  		/* Print multiboot information */
  		dump_multiboot(mboot_ptr);
 
- 		if (mboot_ptr->flags & 0x04) {
+ 		if (mboot_ptr->flags & (1 << 3)) {
  			if (mboot_ptr->mods_count > 0) {
  				initrd_mount((uintptr_t)ramdisk, 0);
  			}
