@@ -1,5 +1,5 @@
 #include <system.h>
-#include <multiboot.h>
+#include <boot.h>
 #include <ext2.h>
 
 /*
@@ -7,10 +7,10 @@
  */
  int main(struct multiboot *mboot_ptr, uint32_t mboot_mag)
  {
-   int using_multiboot = 0;
+   enum BOOTMODE boot_mode = unknown; /* Boot mode */
  	char * ramdisk = NULL;
  	if (mboot_mag == MULTIBOOT_EAX_MAGIC) {
- 		using_multiboot = 1;
+ 		boot_mode = multiboot;
  		/* Realing memory to the end of the multiboot modules */
  		kmalloc_startat(0x200000);
  		if (mboot_ptr->flags & (1 << 3)) {
@@ -20,7 +20,13 @@
  				ramdisk = (char *)kmalloc(module_end - module_start);
  				memcpy(ramdisk, (char *)module_start, module_end - module_start);
  			}
- 		}
+ 		} else {
+			/**
+			 * This ain't a multiboot attempt. We were probably loaded by
+			 * Mr. Boots, out dedicated boot loader. Verify this...
+			 */
+			boot_mode = mrboots;
+		}
  	}
 
  	/* Initialize core modules */
@@ -43,7 +49,7 @@
  	settextcolor(12, 0);
  	kprintf("[%s %s]\n", KERNEL_UNAME, KERNEL_VERSION_STRING);
 
- 	if (using_multiboot) {
+ 	if (boot_mode == multiboot) {
  		/* Print multiboot information */
  		dump_multiboot(mboot_ptr);
 
