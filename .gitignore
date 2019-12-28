@@ -1,5 +1,3 @@
-kernel
 *.o
 bootdisk.img
-initrd
 *.swp
