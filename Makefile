@@ -17,7 +17,7 @@ install: kernel initrd
 	cp initrd /boot/MyaXos-initrd
 
 run: kernel initrd
-	${EMU} -kernel kernel -initrd initrd
+	${EMU} -kernel kernel -initrd initrd -serial stdio
 
 kernel: start.o link.ld main.o ${MODULES} ${FILESYSTEMS}
 	${LD} -T link.ld -o kernel *.o core/*.o core/fs/*.o
