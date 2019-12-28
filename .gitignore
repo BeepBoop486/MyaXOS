@@ -1,6 +1,8 @@
 *.o
 bootdisk.img
 *.swp
+bootloader/stage1.bin
+bootloader/stage2.bin
 mya-kernel
 mya-initrd
 initrd/boot
