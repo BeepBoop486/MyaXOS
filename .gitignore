@@ -6,3 +6,4 @@ bootloader/stage2.bin
 mya-kernel
 mya-initrd
 initrd/boot
+.gdb_history
