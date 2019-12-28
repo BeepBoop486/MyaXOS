@@ -16,13 +16,13 @@ DD = dd conv=notrunc
 
 all: mya-kernel mya-initrd
 
-install: mya-kernel mya-initrd
+install: mya-initrd mya-kernel
 	@${ECHO} -n "\033[34m   --   Installing to /boot...\033[0m"
 	@cp mya-kernel /boot/mya-kernel
 	@cp mya-initrd /boot/mya-initrd
 	@${ECHO} "\r\033[34;1m   --   Kernel and ramdisk installed.\033[0m"
 
-run: mya-kernel mya-initrd
+run: mya-initrd mya-kernel
 	${EMU} -kernel mya-kernel -initrd mya-initrd -serial stdio
 
 ################
