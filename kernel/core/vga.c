@@ -133,7 +133,7 @@ void puts(char * text){
 	int i;
 	int len = strlen(text);
 	for (i = 0; i < len; ++i) {
-		putch(text[i]);
+		writech(text[i]);
 	}
 }
 
