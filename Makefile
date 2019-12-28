@@ -5,7 +5,7 @@ NASM = nasm -f elf
 ECHO = `which echo` -e
 MODULES = $(patsubst %.c,%.o,$(wildcard core/*.c))
 FILESYSTEMS = $(patsubst %.c,%.o,$(wildcard core/fs/*.c))
-EMU = qemu-system-x86_64 -fda
+EMU = qemu-system-x86_64
 GENEXT = genext2fs
 
 .PHONY: kernel initrd
@@ -13,16 +13,11 @@ GENEXT = genext2fs
 all: kernel initrd
 
 install: kernel initrd
-	cp bootdisk.src.img bootdisk.img
-	mount bootdisk.img /mnt -o loop
-	cp kernel /mnt/kernel
-	cp initrd /mnt/initrd
-	umount /mnt
 	cp kernel /boot/MyaXos-kernel
 	cp initrd /boot/MyaXos-initrd
 
-run: bootdisk.img
-	${EMU} bootdisk.img
+run: kernel initrd
+	${EMU} -kernel kernel -initrd initrd
 
 kernel: start.o link.ld main.o ${MODULES} ${FILESYSTEMS}
 	${LD} -T link.ld -o kernel *.o core/*.o core/fs/*.o
