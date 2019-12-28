@@ -1,12 +1,10 @@
 #include <system.h>
 
-#define args_list char *
-#define _arg_stack_size(type) (((sizeof(type)-1)/sizeof(int)+1)*sizeof(int))
-#define args_start(ap, fmt) do { \
-	ap = (char *)((unsigned int)&fmt + _arg_stack_size(&fmt));\
-} while (0)
-#define args_end(ap)
-#define args_next(ap, type) (((type *)(ap+=_arg_stack_size(type)))[-1])
+typedef __builtin_va_list va_list;
+#define va_start(ap,last) __builtin_va_start(ap, last)
+#define va_end(ap) __builtin_va_end(ap)
+#define va_arg(ap,type) __builtin_va_arg(ap,type)
+#define va_copy(dest, src) __builtin_va_copy(dest,src)
 
 static char buf[1024] = {-1};
 static int ptr = -1;
@@ -45,8 +43,8 @@ static void parse_hex(unsigned int value) {
 void kprintf(const char *fmt,...) {
 	int i = 0;
 	char *s;
-	args_list args;
-	args_start(args, fmt);
+	va_list args;
+	va_start(args, fmt);
 	ptr = 0;
 	for ( ; fmt[i]; ++i) {
 		if ((fmt[i] != '%') && (fmt[i] != '\\')) {
@@ -66,19 +64,19 @@ void kprintf(const char *fmt,...) {
 		/* fmt[i] == '%' */
 		switch (fmt[++i]) {
 			case 's':
-				s = (char *)args_next(args, char *);
+				s = (char *)va_arg(args, char *);
 				while (*s) {
 					buf[ptr++] = *s++;
 				}
 				break;
 			case 'c':
-				buf[ptr++] = (char)args_next(args, int);
+				buf[ptr++] = (char)va_arg(args, int);
 				break;
 			case 'x':
-				parse_hex((unsigned long)args_next(args, unsigned long));
+				parse_hex((unsigned long)va_arg(args, unsigned long));
 				break;
 			case 'd':
-				parse_num((unsigned long)args_next(args, unsigned long), 10);
+				parse_num((unsigned long)va_arg(args, unsigned long), 10);
 				break;
 			case '%':
 				buf[ptr++] = '%';
@@ -89,7 +87,7 @@ void kprintf(const char *fmt,...) {
 		}
 	}
 	buf[ptr] = '\0';
-	args_end(args);
+	va_end(args);
 	puts(buf);
 }
 
@@ -100,7 +98,8 @@ int kgets_newline   = 0;
 int kgets_cancel    = 0;
 
 void kgets_handler(char ch) {
-	if(ch == 0x08) {
+
+	if (ch == 0x08) {
 		/* Backspace */
 		if (kgets_collected != 0) {
 			writech(0x08);
@@ -114,15 +113,13 @@ void kgets_handler(char ch) {
 		kgets_newline = 1;
 		writech('\n');
 		return;
-	} else if(ch < 0x20) {
-		writech("^");
+	} else if (ch < 0x20) {
+		writech('^');
 		writech(ch + 0x40);
 		return;
 	} else {
 		writech(ch);
 	}
-
-
 	if (kgets_collected < kgets_want) {
 		kgets_buffer[kgets_collected] = ch;
 		kgets_collected++;
