@@ -63,6 +63,32 @@ void cls() {
 	move_csr();
 }
 
+/**
+ * placech
+ * Put a character in a particular cell with the given atrtibutes
+ */
+void placech(unsigned char c, int x, int y, int attr) {
+	unsigned short *where;
+	unsigned att = attr << 8;
+	where = textmemptr + (y * 80 + x);
+	*where = c | attr;
+}
+
+/**
+ * writechf
+ * Force write the given character
+ */
+void writechf(unsigned char c) {
+	placech(c, csr_x, csr_y, attrib);
+	csr_x++;
+	if(csr_x >= 80) {
+		csr_x = 0;
+		++csr_y;
+	}
+	scroll();
+	move_csr();
+}
+
 /*
  * writech
  * Write a character to the screen
