@@ -154,22 +154,22 @@ uint32_t initrd_node_from_file(ext2_inodetable_t * inode,ext2_dir_t * direntry,f
 	fnode->mask = inode->mode & 0xFFF;
 	/* File Flags */
 	fnode->flags = 0;
-	if (inode->mode & EXT2_S_IFREG) {
+	if ((inode->mode & EXT2_S_IFREG) == EXT2_S_IFREG) {
 		fnode->flags |= FS_FILE;
 	}
-	if (inode->mode & EXT2_S_IFDIR) {
+	if ((inode->mode & EXT2_S_IFDIR) == EXT2_S_IFDIR) {
 		fnode->flags |= FS_DIRECTORY;
 	}
-	if (inode->mode & EXT2_S_IFBLK) {
+	if ((inode->mode & EXT2_S_IFBLK) == EXT2_S_IFBLK) {
 		fnode->flags |= FS_BLOCKDEVICE;
 	}
-	if (inode->mode & EXT2_S_IFCHR) {
+	if ((inode->mode & EXT2_S_IFCHR) == EXT2_S_IFCHR) {
 		fnode->flags |= FS_CHARDEVICE;
 	}
-	if (inode->mode & EXT2_S_IFIFO) {
+	if ((inode->mode & EXT2_S_IFIFO) == EXT2_S_IFIFO) {
 		fnode->flags |= FS_PIPE;
 	}
-	if (inode->mode & EXT2_S_IFLNK) {
+	if ((inode->mode & EXT2_S_IFLNK) == EXT2_S_IFLNK) {
 		fnode->flags |= FS_SYMLINK;
 	}
 	fnode->read    = read_initrd;
@@ -197,22 +197,22 @@ uint32_t initrd_node_root(ext2_inodetable_t * inode, fs_node_t * fnode) {
 	fnode->mask   = inode->mode & 0xFF;
 	/* File Flags */
 	fnode->flags = 0;
-	if (inode->mode & EXT2_S_IFREG) {
+	if ((inode->mode & EXT2_S_IFREG) == EXT2_S_IFREG) {
 		fnode->flags |= FS_FILE;
 	}
-	if (inode->mode & EXT2_S_IFDIR) {
+	if ((inode->mode & EXT2_S_IFDIR) == EXT2_S_IFDIR) {
 		fnode->flags |= FS_DIRECTORY;
 	}
-	if (inode->mode & EXT2_S_IFBLK) {
+	if ((inode->mode & EXT2_S_IFBLK) == EXT2_S_IFBLK) {
 		fnode->flags |= FS_BLOCKDEVICE;
 	}
-	if (inode->mode & EXT2_S_IFCHR) {
+	if ((inode->mode & EXT2_S_IFCHR) == EXT2_S_IFCHR) {
 		fnode->flags |= FS_CHARDEVICE;
 	}
-	if (inode->mode & EXT2_S_IFIFO) {
+	if ((inode->mode & EXT2_S_IFIFO) == EXT2_S_IFIFO) {
 		fnode->flags |= FS_PIPE;
 	}
-	if (inode->mode & EXT2_S_IFLNK) {
+	if ((inode->mode & EXT2_S_IFLNK) == EXT2_S_IFLNK) {
 		fnode->flags |= FS_SYMLINK;
 	}
 	fnode->read    = read_initrd;
@@ -240,22 +240,22 @@ uint32_t initrd_node_from_dirent(ext2_inodetable_t * inode,struct dirent * diren
 	fnode->mask = inode->mode & 0xFFF;
 	/* File Flags */
 	fnode->flags = 0;
-	if (inode->mode & EXT2_S_IFREG) {
+	if ((inode->mode & EXT2_S_IFREG) == EXT2_S_IFREG) {
 		fnode->flags |= FS_FILE;
 	}
-	if (inode->mode & EXT2_S_IFDIR) {
+	if ((inode->mode & EXT2_S_IFDIR) == EXT2_S_IFDIR) {
 		fnode->flags |= FS_DIRECTORY;
 	}
-	if (inode->mode & EXT2_S_IFBLK) {
+	if ((inode->mode & EXT2_S_IFBLK) == EXT2_S_IFBLK) {
 		fnode->flags |= FS_BLOCKDEVICE;
 	}
-	if (inode->mode & EXT2_S_IFCHR) {
+	if ((inode->mode & EXT2_S_IFCHR) == EXT2_S_IFCHR) {
 		fnode->flags |= FS_CHARDEVICE;
 	}
-	if (inode->mode & EXT2_S_IFIFO) {
+	if ((inode->mode & EXT2_S_IFIFO) == EXT2_S_IFIFO) {
 		fnode->flags |= FS_PIPE;
 	}
-	if (inode->mode & EXT2_S_IFLNK) {
+	if ((inode->mode & EXT2_S_IFLNK) == EXT2_S_IFLNK) {
 		fnode->flags |= FS_SYMLINK;
 	}
 	fnode->read    = read_initrd;
