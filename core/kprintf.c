@@ -97,6 +97,7 @@ char * kgets_buffer = NULL;
 int kgets_collected = 0;
 int kgets_want      = 0;
 int kgets_newline   = 0;
+int kgets_cancel    = 0;
 
 void kgets_handler(char ch) {
 	if(ch == 0x08) {
@@ -112,6 +113,10 @@ void kgets_handler(char ch) {
 	} else if (ch == '\n') {
 		kgets_newline = 1;
 		writech('\n');
+		return;
+	} else if(ch < 0x20) {
+		writech("^");
+		writech(ch + 0x40);
 		return;
 	} else {
 		writech(ch);
