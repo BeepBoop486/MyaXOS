@@ -4,30 +4,7 @@
 [ORG 0x7C00]       ; Start point
 
 start:
-;	jmp loader     ; Jump over the MBR bits
-;
-;; MBR OEM Parameter Block
-;bpbOEM               db "MyaX OS "
-;bpbBytesPerSector    dw 512
-;bpbSectorsPerCluster db 1
-;bpbReservedSectors   dw 1
-;bpbNumberoOfFATs     db 2
-;bpbRootEntries       dw 224
-;bpbTotalSectors      dw 2880
-;bpbMedia             db 0xf0
-;bpbSectorsPerFAT     dw 9
-;bpbSectorsPerTrack   dw 18
-;bpbHeadsPerCylinder  dw 2
-;bpbHiddenSectors     dd 0
-;bpbTotalSectorsBig   dd 0
-;bsDriveNumber        db 0
-;bsUnused             db 0
-;bsExtBootSignature   db 0x29
-;bsSerialNumber       dd 0xdeadbeef
-;bsVolumeLabel        db "MyaX Boot "
-;bsFileSystem         db "FAT12   "
-;
-;loader:
+
 	mov ax, 0x00   ; Initialize data segment
 	mov ds, ax     ; ...
 
