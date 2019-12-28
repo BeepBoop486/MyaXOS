@@ -140,7 +140,34 @@ void start_shell() {
 				settextcolor(9,0);
 				kprintf("TODO: this\n");
 				resettextcolor();
-			} else {
+			} else if (!strcmp(cmd, "out")) {
+				if (tokenid < 3) {
+					kprintf("Need a port and a character (both as numbers, please) to write...\n");
+				} else {
+					int port;
+					port = atoi(argv[1]);
+					int val;
+					val  = atoi(argv[2]);
+					kprintf("Writing %d (%c) to port %d\n", val, (unsigned char)val, port);
+					outportb((short)port, (unsigned char)val);
+				}
+			} else if (!strcmp(cmd, "serial")) {
+				if (tokenid < 2) {
+					kprintf("Need some arguments.\n");
+				} else {
+					int i = 1;
+					for (i = 1; i < tokenid; ++i) {
+						int j = 0;
+						for (j = 0; j < strlen(argv[i]); ++j) {
+							serial_send(argv[i][j]);
+							writech(argv[i][j]);
+						}
+						writech(' ');
+					}
+					serial_send('\n');
+					writech('\n');
+				}
+			}else {
  				kprintf("Unrecognized command: %s\n", cmd);
  			}
 		}
