@@ -3,3 +3,4 @@ bootdisk.img
 *.swp
 mya-kernel
 mya-initrd
+initrd/boot
