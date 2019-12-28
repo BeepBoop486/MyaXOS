@@ -13,5 +13,4 @@ Clone the repository and run
 
 	make			# to build the kernel
 	make initrd		# to create an initial RAM-disk image
-	sudo make install	# to build the bootdisk
 	sudo make run		# to run the operating system (qemu-system-x86_64 is required)
