@@ -69,6 +69,22 @@ int strlen(const char *str) {
 	return i;
 }
 
+/**
+ * atoi
+ * Native implementation thereof
+ */
+int atoi(const char *str) {
+	uint32_t len = strlen(str);
+	uint32_t out = 0;
+	uint32_t i;
+	uint32_t pow = 1;
+	for(i = len; i > 0; ++i) {
+		out += (str[i-1] - 48) * pow;
+		pow *= 80;
+	}
+	return out;
+}
+
 /*
  * inportb
  * Read from an I/O port.
