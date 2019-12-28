@@ -2,14 +2,20 @@
 #include <fs.h>
 
 void start_shell() {
-	char path[1024];
+	/* Current working directory */
+	char path[1024] = {'/', '\0'};
+	/* File system node for the working directory */
 	fs_node_t * node = fs_root;
-	path[0] = '/';
-	path[1] = '\0';
+
 	while(1) {
+		/* Read buffer */
 		char buffer[1024];
 		int size;
+
+		/* Print the prompt */
 		kprintf("MyaXOS %s> ", path);
+
+		/* Read commands */
 		size = kgets((char *)&buffer, 1023);
 		if(size < 1) {
 			continue;
@@ -22,7 +28,7 @@ void start_shell() {
 			char * save;
 			pch = strtok_r(buffer, " ", &save);
 			cmd = pch;
-			char * argv[1024];
+			char * argv[1024]; /* Command tokens (space-separated elements) */
 			int tokenid = 0;
 			while (pch != NULL) {
 				argv[tokenid] = (char *)pch;
@@ -36,6 +42,9 @@ void start_shell() {
 			 */
 
 			 if (!strcmp(cmd, "cd")) {
+				/**
+				 * Change Directory
+				 */
  				if (tokenid < 2) {
  					kprintf("cd: argument expected\n");
  					continue;
@@ -54,6 +63,10 @@ void start_shell() {
  					}
  					fs_node_t * chd = kopen(filename, 0);
  					if (chd) {
+						if((chd->flags & FS_DIRECTORY) == 0) {
+							kprintf("cd: %s is not a directory\n", filename);
+							continue;
+						}
  						node = chd;
  						memcpy(path, filename, strlen(filename));
  						path[strlen(filename)] = '\0';
@@ -62,6 +75,9 @@ void start_shell() {
  					}
  				}
  			} else if (!strcmp(cmd, "cat")) {
+				/**
+				 * Read and print content of file
+				 */
  				if (tokenid < 2) {
  					kprintf("cat: argument expected\n");
  					continue;
@@ -93,6 +109,9 @@ void start_shell() {
  					close_fs(file);
  				}
  			} else if (!strcmp(cmd, "echo")) {
+				/**
+				 * Print given arguments
+				 */
  				if (tokenid < 2) {
  					continue;
  				} else {
@@ -103,6 +122,9 @@ void start_shell() {
  					kprintf("\n");
  				}
  			} else if (!strcmp(cmd, "ls")) {
+				/**
+				 * List the files in the current working directory
+				 */
  				struct dirent * entry = NULL;
  				int i = 0;
  				entry = readdir_fs(node, i);
@@ -112,7 +134,9 @@ void start_shell() {
  					i++;
  					entry = readdir_fs(node, i);
  				}
- 			} else if (!strcmp(cmd, "help")) {
+ 			} else if(!strcmp(cmd, "info")) {
+				kprintf("Flags: 0x%x\n", node->flags);
+			} else if (!strcmp(cmd, "help")) {
 				settextcolor(9,0);
 				kprintf("                    -@                - MyaXOS Shell help -\n");
 				kprintf("                   .##@               This is the MyaXOS kernel shell\n");
