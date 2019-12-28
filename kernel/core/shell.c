@@ -167,7 +167,14 @@ void start_shell() {
 					serial_send('\n');
 					writech('\n');
 				}
-			}else {
+			}else if(!strcmp(cmd, "crash")) {
+
+				kprintf("Going to dereference some invalid pointer.\n");
+				int i = 0xFFFFFFF;
+				int j = *(int *)i;
+				j = 0xDEADBEEF;
+
+			} else {
  				kprintf("Unrecognized command: %s\n", cmd);
  			}
 		}
