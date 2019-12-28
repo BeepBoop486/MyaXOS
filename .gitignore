@@ -1,3 +1,5 @@
 *.o
 bootdisk.img
 *.swp
+mya-kernel
+mya-initrd
