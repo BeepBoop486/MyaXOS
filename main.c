@@ -33,6 +33,7 @@
  	/* Hardware drivers */
  	timer_install();
  	keyboard_install();
+	serial_install();
 
  	/* Memory management */
  	paging_install(mboot_ptr->mem_upper);

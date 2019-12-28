@@ -115,6 +115,8 @@ void writech(unsigned char c) {
 		csr_x++;
 	}
 
+	serial_send(c);
+
 	if (csr_x >= 80) {
 		csr_x = 0;
 		csr_y++;
