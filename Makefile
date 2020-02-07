@@ -13,7 +13,7 @@ DD = dd conv=notrunc
 
 .PHONY: all clean install run
 
-all: mya-kernel mya-initrd
+all: mya-kernel mya-initrd bootdisk.img
 
 install: mya-initrd mya-kernel
 	@${ECHO} -n "\033[34m   --   Installing to /boot...\033[0m"
@@ -49,7 +49,6 @@ mya-initrd: initrd/kernel
 	@${ECHO} -n "\033[32m initrd Generating initial RAM disk\033[0m"
 	@-rm -f mya-initrd
 	@${GENEXT} -d initrd -q -b 249 mya-initrd
-	@${DD} if=bootloader/stage1.bin of=mya-initrd 2>/dev/null
 	@${ECHO} "\r\033[32;1m initrd Generated initial RAM disk image\033[0m"
 
 ### Ram Disk installers...
