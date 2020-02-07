@@ -31,11 +31,13 @@ mya-kernel: kernel/start.o kernel/link.ld kernel/main.o ${MODULES} ${FILESYSTEMS
 	@${ECHO} -n "\033[32m   LD   $<\033[0m"
 	@${LD} -T kernel/link.ld -o mya-kernel kernel/*.o kernel/core/*.o kernel/core/fs/*.o
 	@${ECHO} "\r\033[32;1m   LD   $<\033[0m"
+	@${ECHO} "\033[34;1m     --   Kernel is ready!\033[0m"
 
 kernel/start.o: kernel/start.asm
 	@${ECHO} -n "\033[32m  yasm  $<\033[0m"
 	@${YASM} -f elf -o kernel/start.o kernel/start.asm
 	@${ECHO} "\r\033[32;1m  yasm  $<\033[0m"
+	@${ECHO} "\033[34;1m    --   HDD image is ready!\033[0m"
 
 %.o: %.c
 	@${ECHO} -n "\033[32m   CC   $<\033[0m"
