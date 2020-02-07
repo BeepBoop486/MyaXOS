@@ -45,7 +45,7 @@ kernel/start.o: kernel/start.asm
 ################
 #   Ram disk   #
 ################
-mya-initrd: initrd bootloader/stage1.bin initrd/stage2 initrd/kernel
+mya-initrd: initrd/kernel
 	@${ECHO} -n "\033[32m initrd Generating initial RAM disk\033[0m"
 	@-rm -f mya-initrd
 	@${GENEXT} -d initrd -q -b 249 mya-initrd
@@ -57,10 +57,6 @@ mya-initrd: initrd bootloader/stage1.bin initrd/stage2 initrd/kernel
 # Kernel
 initrd/kernel: mya-kernel
 	@cp mya-kernel initrd/boot/kernel
-
-# Second-stage bootloader
-initrd/stage2: bootloader/stage2.bin
-	@cp bootloader/stage2.bin initrd/stage2
 
 ################
 #  Bootloader  #
@@ -98,11 +94,10 @@ bootloader/stage2.bin: bootloader/stage2/main.o bootloader/stage2/start.o bootlo
 	@${LD} -o bootloader/stage2.bin -T bootloader/stage2/link.ld bootloader/stage2/start.o bootloader/stage2/main.o
 	@${ECHO} "\r\033[32;1m   ld   $<\033[0m"
 
-testdisk: bootloader/stage1.bin bootloader/stage2.bin
-	@${ECHO} "\033[31;1m  WARN  This disk is a temporary development test only!\033[0m"
-	@${ECHO} -n "\033[34m   --   Building tesdisk...\033[0m"
-	@cat bootloader/stage1.bin bootloader/stage2.bin > testdisk
-	@${ECHO} "\r\033[34;1m   --   Testdisk compiled.  \033[0m"
+bootdisk.img: bootloader/stage1.bin bootloader/stage2.bin
+	@${ECHO} -n "\033[34m   --   Building bootdisk.img...\033[0m"
+	@cat bootloader/stage1.bin bootloader/stage2.bin > bootdisk.img
+	@${ECHO} "\r\033[34;1m   --   Bootdisk compiled.  \033[0m"
 
 ###############
 #    clean    #
