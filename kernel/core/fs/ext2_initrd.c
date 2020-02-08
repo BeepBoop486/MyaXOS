@@ -317,6 +317,10 @@ void initrd_mount(uint32_t mem_head,uint32_t mem_top) {
 	initrd_inode_table = (ext2_inodetable_t *)((uintptr_t)initrd_start + (1024 << initrd_superblock->log_block_size) * initrd_root_block->inode_table);
 	// Get the second inode
 	ext2_inodetable_t * root_inode = ext2_get_inode(2);
+	kprintf("[DEBUG] root block 0 is %d\n", root_inode->block[0]);
+	kprintf("[DEBUG] root size    is %d\n", root_inode->size);
+	kprintf("[DEBUG]          uid is %d\n", root_inode->uid);
+	kprintf("[DEBUG]        atime is %d\n", root_inode->atime);
 	ext2_dir_t * root_direntry = ext2_get_direntry(root_inode, 0);
 	initrd_root = (fs_node_t *)malloc(sizeof(fs_node_t));
 	assert(initrd_node_root(root_inode, initrd_root));
