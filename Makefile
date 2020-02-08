@@ -120,5 +120,5 @@ clean:
 	@-rm -f bootloader/stage2/*.o
 	@-rm -f initrd/stage2
 	@-rm -f initrd/kernel
-	@-rm -f testdisk
+	@-rm -f bootdisk.img
 	@${ECHO} "\r\033[31;1m   RM   Finished cleaning.\033[0m\033[K"
